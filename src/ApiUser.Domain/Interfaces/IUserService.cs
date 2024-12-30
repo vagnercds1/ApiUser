@@ -10,9 +10,9 @@ namespace ApiUser.Domain.Interfaces
 
         Task<List<User>> GetUsersAsync(User user);
 
-        Task<ValidationResult> UpdateUserAsync(int id, UserDto userDto);
+        Task<GenericValidationResult> UpdateUserAsync(string id, UserDto userDto);
 
-        Task<bool> DeleteUserAsync(User user);
+        Task<GenericValidationResult> DeleteUserAsync(string id);
 
         Task<User> LoginUserAsync(string user, string password);
     }

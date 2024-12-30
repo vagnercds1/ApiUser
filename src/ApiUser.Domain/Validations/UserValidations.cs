@@ -13,10 +13,10 @@ public class UserValidationAdd : AbstractValidator<User>
         _userRepository = userRepository;
 
         RuleFor(x => x).Cascade(CascadeMode.Continue)
-          .Must(x => !string.IsNullOrEmpty(x.Document)).WithMessage("It is mandatory to inform the Document")
-          .Must(x => !string.IsNullOrEmpty(x.Email)).WithMessage("It is mandatory to inform the Email")
-          .Must(x => !string.IsNullOrEmpty(x.Password)).WithMessage("It is mandatory to inform the Password")
-          .Must(x => !string.IsNullOrEmpty(x.FullName)).WithMessage("It is mandatory to inform the FullName")
+          .Must(x => !string.IsNullOrEmpty(x.Document)).WithMessage("Please set Document")
+          .Must(x => !string.IsNullOrEmpty(x.Email)).WithMessage("Please set Email")
+          .Must(x => !string.IsNullOrEmpty(x.Password)).WithMessage("Please set Password")
+          .Must(x => !string.IsNullOrEmpty(x.FullName)).WithMessage("Please set FullName")
           .MustAsync(async (user, cancellation) => !await UserAlreadyExists(user.Email).ConfigureAwait(false)).WithMessage("User Already Exists");
     } 
    

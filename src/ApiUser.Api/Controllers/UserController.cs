@@ -41,17 +41,17 @@ namespace ApiUser.Api.Controllers
             }
         }
 
-        [HttpGet("get{id}/{email}")]
+        [HttpGet("get/{email}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         //  [Authorize]
-        public async Task<ActionResult<User>> GetUserAsync(string id,string email)
+        public async Task<ActionResult<User>> GetUserAsync(string email)
         {
             try
             {
-                var user = await _userService.GetUsersAsync(new User() {Id=id,Email=email });
+                var user = await _userService.GetUsersAsync(new User() {Email=email });
 
                 return user.Any() ? 
                     Ok(user) : 
@@ -64,20 +64,23 @@ namespace ApiUser.Api.Controllers
             }
         }
 
-        [HttpPut("update{id}")]
+        [HttpPut("update/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         //  [Authorize]
-        public async Task<ActionResult<string>> Put(int id, [FromBody] UserDto userDto)
+        public async Task<ActionResult<string>> Put(string id, [FromBody] UserDto userDto)
         {
             try
-            {
+            { 
+                var result = await _userService.UpdateUserAsync(id, userDto);
 
-                var user = await _userService.UpdateUserAsync(id, userDto);
-
-                return Ok("User Updated");
+                if(result.StatusCode == System.Net.HttpStatusCode.OK)
+                    return Ok(result.Message);
+                else
+                    return StatusCode(Convert.ToInt32(result.StatusCode), result.Message);
             }
             catch (Exception ex)
             {
@@ -86,17 +89,22 @@ namespace ApiUser.Api.Controllers
             }
         }
 
-        [HttpDelete("delete{id}")]
+        [HttpDelete("delete/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         // [Authorize]
-        public ActionResult<string> Delete(int id)
+        public async Task<ActionResult<string>> Delete(string id)
         {
             try
             {
-                return Ok("User permanently deleted");
+                var result = await _userService.DeleteUserAsync(id);
+
+                if (result.StatusCode == System.Net.HttpStatusCode.OK)
+                    return Ok(result.Message);
+                else
+                    return StatusCode(Convert.ToInt32(result.StatusCode), result.Message);
             }
             catch (Exception ex)
             {

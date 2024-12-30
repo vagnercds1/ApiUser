@@ -11,4 +11,6 @@ public class BaseEntity
     public string Id { get; set; } = string.Empty; 
 
     public DateTime DateInsert { get; set; }
+
+    public DateTime DateUpdate { get; set; }
 }

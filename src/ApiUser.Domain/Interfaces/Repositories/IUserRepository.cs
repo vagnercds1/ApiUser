@@ -7,7 +7,7 @@ namespace ApiUser.Domain.Interfaces.Repositories
         Task CreateUserAsync(User user); 
         Task<List<User>> GetUserAsync(User user);
         Task<User?> GetUserByIdAsync(string id);
-        Task UpdateUserAsync(int id, string value);
-        Task DeleteUserAsync(int id); 
+        Task UpdateUserAsync(User user);
+        Task DeleteUserAsync(string id);
     }
 }

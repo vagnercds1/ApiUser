@@ -4,12 +4,12 @@ using ApiUser.Domain.Interfaces.Repositories;
 using ApiUser.Domain.Models;
 using ApiUser.Domain.Validations;
 using FluentValidation.Results;
+using System.Net;
 
 namespace ApiUser.Domain.Services;
 
 public class UserService : IUserService
 {
-
     private readonly IUserRepository _repository;
 
     public UserService(IUserRepository userRepository)
@@ -19,7 +19,7 @@ public class UserService : IUserService
 
     public async Task<ValidationResult> CreateUserAsync(User user)
     {
-        UserValidationAdd validation = new(_repository);         
+        UserValidationAdd validation = new(_repository);
 
         var validationResult = await validation.ValidateAsync(user);
 
@@ -29,25 +29,52 @@ public class UserService : IUserService
         await _repository.CreateUserAsync(user);
 
         return validationResult;
-    }
-
-    public async Task<ValidationResult> UpdateUserAsync(int id, UserDto userDto)
-    {
-       
-
-
-    }
-
+    } 
     public async Task<List<User>> GetUsersAsync(User user)
-    { 
+    {
         var users = await _repository.GetUserAsync(user);
 
         return users;
     }
 
-    public Task<bool> DeleteUserAsync(User user)
+    public async Task<GenericValidationResult> UpdateUserAsync(string id, UserDto userDto)
     {
-        throw new NotImplementedException();
+        var foundUserById = await _repository.GetUserByIdAsync(id: id);
+
+        if (foundUserById == null)
+            return new GenericValidationResult(statusCode: HttpStatusCode.BadRequest, "User not found");
+
+        var foundUserByEmail = await _repository.GetUserAsync(new User() { Email = userDto.Email });
+
+        if (foundUserByEmail
+                 .Where(item => item.Email == userDto.Email && item.Id != foundUserById.Id)
+                 .ToList().Any())
+        {
+            return new GenericValidationResult(statusCode: HttpStatusCode.BadRequest, "Email already registered previously.");
+        }
+
+        foundUserById.Email = userDto.Email;
+        foundUserById.FullName = userDto.FullName;
+        foundUserById.Password = userDto.Password;
+        foundUserById.DateUpdate = DateTime.UtcNow;
+
+        await _repository.UpdateUserAsync(foundUserById);
+
+        return new GenericValidationResult(statusCode: HttpStatusCode.OK, "User updated.");
+    }
+
+    public async Task<GenericValidationResult> DeleteUserAsync(string id)
+    {
+        var foundUserById = await _repository.GetUserByIdAsync(id: id);
+
+        if (foundUserById == null)
+            return new GenericValidationResult(statusCode: HttpStatusCode.BadRequest, "User not found");
+
+        // check data dependences...
+    
+        await _repository.DeleteUserAsync(id);
+
+        return new GenericValidationResult(statusCode: HttpStatusCode.OK, "user permanently deleted.");
     }
 
 
@@ -57,5 +84,5 @@ public class UserService : IUserService
         throw new NotImplementedException();
     }
 
-  
+
 }

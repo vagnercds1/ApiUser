@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using SharpCompress.Common;
 
 namespace ApiUser.Repository.Repositories
 {
@@ -58,14 +59,19 @@ namespace ApiUser.Repository.Repositories
             return await cursor.FirstOrDefaultAsync();
         }
 
-        public Task DeleteUserAsync(int id)
+        public async Task DeleteUserAsync(string id)
         {
-            throw new NotImplementedException();
+            var idsFilter = Builders<User>.Filter.Eq(d => d.Id, id);
+            
+            await _users.FindOneAndDeleteAsync(filter: idsFilter);
         }
 
-        public Task UpdateUserAsync(int id, string value)
+        public async Task UpdateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            var filter = Builders<User>.Filter.Eq(u => u.Id, user.Id);
+            var updateDefinition = Builders<User>.Update.Set(u => u, user);
+
+            var resultado = await _users.UpdateOneAsync(filter, updateDefinition);
         }
     }
 }
