@@ -12,3 +12,8 @@ The database used is MongoDB, and to start it, you need to have 'Docker Desktop'
 bash 
 
 docker-compose up -d
+
+To assist with application testing, import the collection UserApi.postman_collection.json into Postman.
+
+Thank you,
+Vagner Correa dos Santos

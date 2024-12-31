@@ -1,0 +1,174 @@
+{
+	"info": {
+		"_postman_id": "e9e7c62c-a220-404c-bd2e-f81e4bb4b34d",
+		"name": "UserApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1101013"
+	},
+	"item": [
+		{
+			"name": "get by email",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Ijd2YWduZXJjZHNAaG90bWFpbC5jb20iLCJyb2xlIjoiZGVmYXVsdCIsIm5iZiI6MTczNTY2OTI4OCwiZXhwIjoxNzM1Njc2NDg4LCJpYXQiOjE3MzU2NjkyODh9.be5lsnApdPSLNrmbC-3rIPaZDrOXVXN1wN7c4r6DVtw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Ijd2YWduZXJjZHNAaG90bWFpbC5jb20iLCJyb2xlIjoiZGVmYXVsdCIsIm5iZiI6MTczNTY2OTI4OCwiZXhwIjoxNzM1Njc2NDg4LCJpYXQiOjE3MzU2NjkyODh9.be5lsnApdPSLNrmbC-3rIPaZDrOXVXN1wN7c4r6DVtw",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:44376/api/User/get/5vagnercds@hotmail.com",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44376",
+					"path": [
+						"api",
+						"User",
+						"get",
+						"5vagnercds@hotmail.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"fullName\": \"Vagner Correa dos Santos\",\r\n  \"document\": \"123123123\",\r\n  \"email\": \"7vagnercds@hotmail.com\",\r\n  \"password\": \"123123\",\r\n  \"Role\":\"default\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44376/api/User/create",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44376",
+					"path": [
+						"api",
+						"User",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"fullName\": \"Vagner C. Santos\",\r\n  \"document\": \"3333333\",\r\n  \"email\": \"vagnercds@hotmail.com\",\r\n  \"password\": \"2222222\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44376/api/User/update/6773d84be651ee5dc717b4c6",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44376",
+					"path": [
+						"api",
+						"User",
+						"update",
+						"6773d84be651ee5dc717b4c6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44376/api/User/delete/67730caad91235ca1555e68b",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44376",
+					"path": [
+						"api",
+						"User",
+						"delete",
+						"67730caad91235ca1555e68b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" "
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"7vagnercds@hotmail.com\",\r\n    \"password\":\"123123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44376/api/Authenticate/login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44376",
+					"path": [
+						"api",
+						"Authenticate",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
