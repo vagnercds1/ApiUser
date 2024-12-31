@@ -1,19 +1,18 @@
 ﻿using ApiUser.Domain.Configurations;
 using ApiUser.Domain.Entities;
 using ApiUser.Domain.Interfaces.Repositories;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using SharpCompress.Common;
 
 namespace ApiUser.Repository.Repositories
 {
     public class UserRepository : IUserRepository
     {
         private readonly IMongoCollection<User> _users;
-
-        public UserRepository(IOptions<MongoDBSettings> settings)
+        private readonly ILogger<UserRepository> _logger;
+        public UserRepository(IOptions<MongoDBSettings> settings, ILogger<UserRepository> logger )
         {
             var client = new MongoClient(settings.Value.ConnectionString);
             var database = client.GetDatabase(settings.Value.DatabaseName);
@@ -25,30 +24,35 @@ namespace ApiUser.Repository.Repositories
             });
 
             _users = database.GetCollection<User>("Users");
+            _logger = logger;
         }
 
-        public Task CreateUserAsync(User user)
+        public async Task<bool> CreateUserAsync(User user)
         {
-            return _users.InsertOneAsync(user);
+            try
+            {
+                await _users.InsertOneAsync(user);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return false;
+            }
         }
 
         public async Task<List<User>> GetUserAsync(User user)
         {
-            var filters = new List<FilterDefinition<User>>();
-            var builder = Builders<User>.Filter;
+            var filterBuilder = Builders<User>.Filter;
+            var filter = filterBuilder.Empty;
 
-            foreach (var property in typeof(User).GetProperties())
-            {
-                var value = property.GetValue(user);
-                if (value != null && value.ToString() != string.Empty)
-                {
-                    filters.Add(builder.Eq(property.Name, value));
-                }
-            }
+            if (!string.IsNullOrEmpty(user.Email))
+                filter &= filterBuilder.Eq(u => u.Email, user.Email);
 
-            var combinedFilter = filters.Count > 0 ? builder.And(filters) : builder.Empty;
+            if (!string.IsNullOrEmpty(user.Password))
+                filter &= filterBuilder.Eq(u => u.Password, user.Password);
 
-            var users = await _users.Find(combinedFilter).ToListAsync();
+            var users = await _users.Find(filter).ToListAsync();
 
             return users;
         }
@@ -62,7 +66,7 @@ namespace ApiUser.Repository.Repositories
         public async Task DeleteUserAsync(string id)
         {
             var idsFilter = Builders<User>.Filter.Eq(d => d.Id, id);
-            
+
             await _users.FindOneAndDeleteAsync(filter: idsFilter);
         }
 

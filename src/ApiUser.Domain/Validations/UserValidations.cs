@@ -1,5 +1,6 @@
 ﻿using ApiUser.Domain.Entities;
 using ApiUser.Domain.Interfaces.Repositories;
+using ApiUser.Domain.Models;
 using FluentValidation;
 
 namespace ApiUser.Domain.Validations;
@@ -25,4 +26,18 @@ public class UserValidationAdd : AbstractValidator<User>
         var result = await _userRepository.GetUserAsync(new User() { Email=email});
         return result.Any(); 
     }
+}
+
+public class UserValidationLogin: AbstractValidator<LoginDto>
+{
+    private readonly IUserRepository _userRepository;
+
+    public UserValidationLogin(IUserRepository userRepository)
+    {
+        _userRepository = userRepository;
+
+        RuleFor(x => x).Cascade(CascadeMode.Continue)   
+          .Must(x => !string.IsNullOrEmpty(x.Email)).WithMessage("Please set Email")
+          .Must(x => !string.IsNullOrEmpty(x.Password)).WithMessage("Please set Password");
+    } 
 }

@@ -10,7 +10,7 @@ public class BaseEntity
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; } = string.Empty; 
 
-    public DateTime DateInsert { get; set; }
+    public DateTime? DateInsert { get; set; }
 
-    public DateTime DateUpdate { get; set; }
+    public DateTime? DateUpdate { get; set; }
 }

@@ -3,6 +3,7 @@ using ApiUser.Domain.Interfaces;
 using ApiUser.Domain.Interfaces.Repositories;
 using ApiUser.Domain.Models;
 using ApiUser.Domain.Validations;
+using FluentValidation;
 using FluentValidation.Results;
 using System.Net;
 
@@ -19,6 +20,7 @@ public class UserService : IUserService
 
     public async Task<ValidationResult> CreateUserAsync(User user)
     {
+        user.DateInsert = DateTime.UtcNow;
         UserValidationAdd validation = new(_repository);
 
         var validationResult = await validation.ValidateAsync(user);
@@ -29,7 +31,7 @@ public class UserService : IUserService
         await _repository.CreateUserAsync(user);
 
         return validationResult;
-    } 
+    }
     public async Task<List<User>> GetUsersAsync(User user)
     {
         var users = await _repository.GetUserAsync(user);
@@ -50,7 +52,7 @@ public class UserService : IUserService
                  .Where(item => item.Email == userDto.Email && item.Id != foundUserById.Id)
                  .ToList().Any())
         {
-            return new GenericValidationResult(statusCode: HttpStatusCode.BadRequest, "Email already registered previously.");
+            return new GenericValidationResult(statusCode: HttpStatusCode.BadRequest, "Email already registered.");
         }
 
         foundUserById.Email = userDto.Email;
@@ -71,18 +73,9 @@ public class UserService : IUserService
             return new GenericValidationResult(statusCode: HttpStatusCode.BadRequest, "User not found");
 
         // check data dependences...
-    
+
         await _repository.DeleteUserAsync(id);
 
         return new GenericValidationResult(statusCode: HttpStatusCode.OK, "user permanently deleted.");
     }
-
-
-
-    public Task<User> LoginUserAsync(string user, string password)
-    {
-        throw new NotImplementedException();
-    }
-
-
 }

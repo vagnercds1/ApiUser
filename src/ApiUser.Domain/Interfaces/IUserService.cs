@@ -12,8 +12,6 @@ namespace ApiUser.Domain.Interfaces
 
         Task<GenericValidationResult> UpdateUserAsync(string id, UserDto userDto);
 
-        Task<GenericValidationResult> DeleteUserAsync(string id);
-
-        Task<User> LoginUserAsync(string user, string password);
+        Task<GenericValidationResult> DeleteUserAsync(string id);         
     }
 }

@@ -2,6 +2,7 @@
 using ApiUser.Domain.Extentions;
 using ApiUser.Domain.Interfaces;
 using ApiUser.Domain.Models;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiUser.Api.Controllers
@@ -12,11 +13,13 @@ namespace ApiUser.Api.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly IUserService _userService;
+        private readonly IJwtTokenService _jwtTokenService;
 
-        public UserController(ILogger<UserController> logger, IUserService userService)
+        public UserController(ILogger<UserController> logger, IUserService userService, IJwtTokenService jwtTokenService)
         {
             _logger = logger;
             _userService = userService;
+            _jwtTokenService = jwtTokenService;
         }
 
         [HttpPost("create")]
@@ -27,7 +30,7 @@ namespace ApiUser.Api.Controllers
         {
             try
             {
-                var result = await _userService.CreateUserAsync(UserExtensions.ToEntityUser(userDto));
+                ValidationResult result = await _userService.CreateUserAsync(UserExtensions.ToEntityUser(userDto));
 
                 if (!result.IsValid)
                     return BadRequest(String.Join(", ", result.Errors.Select(x => x.ErrorMessage).ToList()));
@@ -51,10 +54,10 @@ namespace ApiUser.Api.Controllers
         {
             try
             {
-                var user = await _userService.GetUsersAsync(new User() {Email=email });
+                var user = await _userService.GetUsersAsync(new User() { Email = email });
 
-                return user.Any() ? 
-                    Ok(user) : 
+                return user.Any() ?
+                    Ok(user.First()) :
                     StatusCode(StatusCodes.Status404NotFound, "User not found.");
             }
             catch (Exception ex)
@@ -74,10 +77,10 @@ namespace ApiUser.Api.Controllers
         public async Task<ActionResult<string>> Put(string id, [FromBody] UserDto userDto)
         {
             try
-            { 
-                var result = await _userService.UpdateUserAsync(id, userDto);
+            {
+                GenericValidationResult result = await _userService.UpdateUserAsync(id, userDto);
 
-                if(result.StatusCode == System.Net.HttpStatusCode.OK)
+                if (result.StatusCode == System.Net.HttpStatusCode.OK)
                     return Ok(result.Message);
                 else
                     return StatusCode(Convert.ToInt32(result.StatusCode), result.Message);
@@ -99,7 +102,7 @@ namespace ApiUser.Api.Controllers
         {
             try
             {
-                var result = await _userService.DeleteUserAsync(id);
+                GenericValidationResult result = await _userService.DeleteUserAsync(id);
 
                 if (result.StatusCode == System.Net.HttpStatusCode.OK)
                     return Ok(result.Message);
@@ -111,16 +114,6 @@ namespace ApiUser.Api.Controllers
                 _logger.LogError(ex.ToString());
                 return StatusCode(StatusCodes.Status500InternalServerError, "An unexpected error occurred. Please try again later.");
             }
-        }
-
-
-        //[HttpPost("login")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        //public async Task<ActionResult<string>> Login(string user, string password)
-        //{
-        //    var token = await _userService.Authenticate(user, password);
-        //    return Ok(token);
-        //}
+        } 
     }
 }
