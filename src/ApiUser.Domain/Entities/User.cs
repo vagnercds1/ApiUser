@@ -10,5 +10,5 @@ public class User : BaseEntity
 
     public string Password { get; set; } = string.Empty;
 
-    public List<string> Roles { get; set; } = new List<string>();
+    public string  Role { get; set; } = string.Empty;
 }

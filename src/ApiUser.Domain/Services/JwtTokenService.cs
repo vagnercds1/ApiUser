@@ -50,8 +50,8 @@ public class JwtTokenService: IJwtTokenService
         var key = Encoding.ASCII.GetBytes(_configuration.GetSection("jwt:secretKey").ToString()!);
 
         var credentials = new SigningCredentials(
-            new SymmetricSecurityKey(key),
-            SecurityAlgorithms.HmacSha256Signature);
+            key:new SymmetricSecurityKey(key),
+            algorithm: SecurityAlgorithms.HmacSha256Signature);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -73,8 +73,7 @@ public class JwtTokenService: IJwtTokenService
 
         ci.AddClaim(claim: new Claim(type: ClaimTypes.Name, value: user.Email));
 
-        foreach (string role in user.Roles)
-            ci.AddClaim(claim: new Claim(type: ClaimTypes.Role, value: role));
+        ci.AddClaim(claim: new Claim(type: ClaimTypes.Role, value: user.Role));
 
         return ci;
     }

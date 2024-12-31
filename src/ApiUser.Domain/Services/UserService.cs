@@ -1,4 +1,5 @@
 ﻿using ApiUser.Domain.Entities;
+using ApiUser.Domain.Extentions;
 using ApiUser.Domain.Interfaces;
 using ApiUser.Domain.Interfaces.Repositories;
 using ApiUser.Domain.Models;
@@ -55,10 +56,8 @@ public class UserService : IUserService
             return new GenericValidationResult(statusCode: HttpStatusCode.BadRequest, "Email already registered.");
         }
 
-        foundUserById.Email = userDto.Email;
-        foundUserById.FullName = userDto.FullName;
-        foundUserById.Password = userDto.Password;
-        foundUserById.DateUpdate = DateTime.UtcNow;
+        foundUserById = UserExtensions.ToEntityUser(userDto);
+        foundUserById.DateUpdate = DateTime.UtcNow;      
 
         await _repository.UpdateUserAsync(foundUserById);
 

@@ -15,7 +15,8 @@ public static class UserExtensions
             FullName = requestUser.FullName,
             Document = requestUser.Document,
             Email = requestUser.Email,
-            Password = requestUser.Password
+            Password = requestUser.Password,
+            Role = requestUser.Role
         };
     }
 }

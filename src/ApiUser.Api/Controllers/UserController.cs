@@ -3,6 +3,7 @@ using ApiUser.Domain.Extentions;
 using ApiUser.Domain.Interfaces;
 using ApiUser.Domain.Models;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiUser.Api.Controllers
@@ -49,7 +50,7 @@ namespace ApiUser.Api.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //  [Authorize]
+        // [Authorize(Roles = "default")]
         public async Task<ActionResult<User>> GetUserAsync(string email)
         {
             try
@@ -73,7 +74,7 @@ namespace ApiUser.Api.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //  [Authorize]
+        //  [Authorize(Roles = "default")]
         public async Task<ActionResult<string>> Put(string id, [FromBody] UserDto userDto)
         {
             try
@@ -97,7 +98,7 @@ namespace ApiUser.Api.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        // [Authorize]
+        //   [Authorize(Roles = "default")]
         public async Task<ActionResult<string>> Delete(string id)
         {
             try
@@ -114,6 +115,6 @@ namespace ApiUser.Api.Controllers
                 _logger.LogError(ex.ToString());
                 return StatusCode(StatusCodes.Status500InternalServerError, "An unexpected error occurred. Please try again later.");
             }
-        } 
+        }
     }
 }

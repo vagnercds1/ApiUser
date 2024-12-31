@@ -28,7 +28,7 @@ namespace ApiUser.Api.Controllers
 
                 return String.IsNullOrEmpty(token) ?
                     StatusCode(StatusCodes.Status401Unauthorized, "User or Password incorrect.") :
-                    Ok(token);
+                    Ok(new {email = loginDto.Email, token = token });
             }
             catch (Exception ex)
             {
