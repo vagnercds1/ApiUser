@@ -50,7 +50,6 @@ namespace ApiUser.Api.Controllers
             }
         }
 
-
         /// <summary>
         /// Return user information based on email
         /// </summary>

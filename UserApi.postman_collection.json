@@ -7,29 +7,63 @@
 	},
 	"item": [
 		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" "
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"vagnercds@hotmail.com\",\r\n    \"password\":\"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7151/security/Authenticate/login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7151",
+					"path": [
+						"security",
+						"Authenticate",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "get by email",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Ijd2YWduZXJjZHNAaG90bWFpbC5jb20iLCJyb2xlIjoiZGVmYXVsdCIsIm5iZiI6MTczNTY2OTI4OCwiZXhwIjoxNzM1Njc2NDg4LCJpYXQiOjE3MzU2NjkyODh9.be5lsnApdPSLNrmbC-3rIPaZDrOXVXN1wN7c4r6DVtw",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Ijd2YWduZXJjZHNAaG90bWFpbC5jb20iLCJyb2xlIjoiZGVmYXVsdCIsIm5iZiI6MTczNTY2OTI4OCwiZXhwIjoxNzM1Njc2NDg4LCJpYXQiOjE3MzU2NjkyODh9.be5lsnApdPSLNrmbC-3rIPaZDrOXVXN1wN7c4r6DVtw",
-						"type": "text",
-						"disabled": true
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ2YWduZXJjZHNAaG90bWFpbC5jb20iLCJqdGkiOiI3MWVjOWNmOC0wZTQzLTQ2ZTItOGFlYS0yOWJlMThiYjJlZjkiLCJleHAiOjE3MzcyMjEwMzMsImlzcyI6InlvdXJkb21haW4uY29tIiwiYXVkIjoieW91cmRvbWFpbi5jb20ifQ.Yqc7SeudPjeJ8VJReuRthH4HAh3lej1T7AC4y07SBTM",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "https://localhost:44376/api/User/get/5vagnercds@hotmail.com",
+					"raw": "https://localhost:44376/api/User/get/vagnercds@hotmail.com",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -39,7 +73,7 @@
 						"api",
 						"User",
 						"get",
-						"5vagnercds@hotmail.com"
+						"vagnercds@hotmail.com"
 					]
 				}
 			},
@@ -52,7 +86,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"fullName\": \"Vagner Correa dos Santos\",\r\n  \"document\": \"123123123\",\r\n  \"email\": \"7vagnercds@hotmail.com\",\r\n  \"password\": \"123123\",\r\n  \"Role\":\"default\"\r\n}",
+					"raw": "{\r\n  \"fullName\": \"Vagner Correa dos Santos\",\r\n  \"document\": \"123123\",\r\n  \"email\": \"vagnercds@hotmail.com\",\r\n  \"password\": \"123\",\r\n  \"Role\":\"default\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -123,48 +157,6 @@
 						"User",
 						"delete",
 						"67730caad91235ca1555e68b"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "login",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							" "
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"email\":\"7vagnercds@hotmail.com\",\r\n    \"password\":\"123123\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44376/api/Authenticate/login",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44376",
-					"path": [
-						"api",
-						"Authenticate",
-						"login"
 					]
 				}
 			},

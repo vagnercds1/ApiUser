@@ -69,6 +69,4 @@ public class UserControllerTests
         Assert.Equal(StatusCodes.Status404NotFound, actionResult.StatusCode);
         Assert.Equal("User not found.", actionResult.Value);
     }
-
-    
 }

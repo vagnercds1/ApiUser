@@ -1,10 +1,8 @@
-﻿using ApiUser.Domain.Entities;
-using ApiUser.Domain.Models;
+﻿using ApiUser.Domain.Models;
 
-namespace ApiUser.Domain.Interfaces
+namespace ApiUser.Domain.Interfaces;
+
+public interface IJwtTokenService
 {
-    public interface IJwtTokenService
-    {
-        Task<string> LoginUserAsync(LoginDto loginDto);
-    }
+    Task<string> LoginUserAsync(LoginDto loginDto);
 }

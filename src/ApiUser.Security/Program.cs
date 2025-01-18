@@ -38,17 +38,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Minha API", Version = "v1" });
-
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Insert the JWT token in the following format: Bearer {token}"
-    });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Security API", Version = "v1" });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
