@@ -8,15 +8,28 @@ namespace ApiUser.Api.Controllers
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
-        private readonly ILogger<AuthenticateController> _logger; 
+        private readonly ILogger<AuthenticateController> _logger;
         private readonly IJwtTokenService _jwtTokenService;
 
-        public AuthenticateController(ILogger<AuthenticateController> logger,  IJwtTokenService jwtTokenService)
+        public AuthenticateController(ILogger<AuthenticateController> logger, IJwtTokenService jwtTokenService)
         {
-            _logger = logger; 
+            _logger = logger;
             _jwtTokenService = jwtTokenService;
         }
 
+        /// <summary>
+        /// EndPoint used for authentication via previously registered email and password
+        /// </summary>
+        /// <param name="loginDto">Object containing email and password requested for authentication</param>
+        /// <returns>
+        /// returns an object containing the token
+        /// 
+        //  {
+        //      "email": "test@test.com",
+        //      "token": "85793408574935.55967850.69678"
+        //  }
+        //  
+        /// </returns>
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

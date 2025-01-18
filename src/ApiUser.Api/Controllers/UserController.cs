@@ -23,6 +23,11 @@ namespace ApiUser.Api.Controllers
             _jwtTokenService = jwtTokenService;
         }
 
+        /// <summary>
+        /// EndPoint used for create new users
+        /// </summary>
+        /// <param name="userDto">Object containing users parameter</param>
+        /// <returns>Return information messages about user creation </returns>
         [HttpPost("create")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -45,12 +50,18 @@ namespace ApiUser.Api.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Return user information based on email
+        /// </summary>
+        /// <param name="email">Parameter used for search the user</param>
+        /// <returns>Return objet user</returns>
         [HttpGet("get/{email}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        // [Authorize(Roles = "default")]
+        [Authorize]
         public async Task<ActionResult<User>> GetUserAsync(string email)
         {
             try
@@ -68,13 +79,19 @@ namespace ApiUser.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Update user information
+        /// </summary>
+        /// <param name="id">User Id</param>
+        /// <param name="userDto">Object with the parameters that can be updated</param>
+        /// <returns>Return information messages about user update</returns>
         [HttpPut("update/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //  [Authorize(Roles = "default")]
+        [Authorize]
         public async Task<ActionResult<string>> Put(string id, [FromBody] UserDto userDto)
         {
             try
@@ -93,12 +110,17 @@ namespace ApiUser.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete user by Id
+        /// </summary>
+        /// <param name="id">User Id</param>
+        /// <returns>Return information messages about user update</returns>
         [HttpDelete("delete/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //   [Authorize(Roles = "default")]
+        [Authorize]
         public async Task<ActionResult<string>> Delete(string id)
         {
             try

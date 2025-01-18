@@ -15,9 +15,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiUser.Api", "src\ApiUser.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiUser.Domain.Test", "tests\ApiUser.Domain.Test\ApiUser.Domain.Test.csproj", "{50A5B51B-4768-41E0-BF6A-5DDDCA7CD435}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiUser.Api.Test", "tests\ApiUser.Api.Test\ApiUser.Api.Test.csproj", "{0547797D-D7A2-41DF-86DA-FFB6F18DFCF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiUser.Api.Test", "tests\ApiUser.Api.Test\ApiUser.Api.Test.csproj", "{0547797D-D7A2-41DF-86DA-FFB6F18DFCF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiUser.Repository.Test", "tests\ApiUser.Repository.Test\ApiUser.Repository.Test.csproj", "{A5C9B067-A177-4E5C-9D0A-F1CC235F375C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiUser.Repository.Test", "tests\ApiUser.Repository.Test\ApiUser.Repository.Test.csproj", "{A5C9B067-A177-4E5C-9D0A-F1CC235F375C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6F035A21-7C69-4DF8-8AA8-2F1BF3560A14}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

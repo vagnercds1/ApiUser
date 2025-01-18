@@ -37,44 +37,29 @@ public class JwtTokenService: IJwtTokenService
                 Password = loginDto.Password
             });
 
-        if (foundUser.Any())
-            return GenerateToken(foundUser.First());
-        else
-            return "";
+       return foundUser.Any() ? GenerateJwtToken(foundUser.First().Email): "";
     }
 
-    private string GenerateToken(User user)
+    private string GenerateJwtToken(string username)
     {
-        var handler = new JwtSecurityTokenHandler();
+        string key = _configuration.GetSection("jwt:secretKey").Value!;
 
-        var key = Encoding.ASCII.GetBytes(_configuration.GetSection("jwt:secretKey").ToString()!);
-
-        var credentials = new SigningCredentials(
-            key:new SymmetricSecurityKey(key),
-            algorithm: SecurityAlgorithms.HmacSha256Signature);
-
-        var tokenDescriptor = new SecurityTokenDescriptor
+        var claims = new[]
         {
-            Subject = GenerateClaims(user),
-            SigningCredentials = credentials,
-            Expires = DateTime.UtcNow.AddHours(2),
+            new Claim(JwtRegisteredClaimNames.Sub, username),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
-        var token = handler.CreateToken(tokenDescriptor);
+        var symmetrickey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+        var creds = new SigningCredentials(symmetrickey, SecurityAlgorithms.HmacSha256);
 
-        var strToken = handler.WriteToken(token);
+        var token = new JwtSecurityToken(
+            issuer: "yourdomain.com",
+            audience: "yourdomain.com",
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(30),
+            signingCredentials: creds);
 
-        return strToken;
-    }
-
-    private ClaimsIdentity GenerateClaims(User user)
-    {
-        var ci = new ClaimsIdentity();
-
-        ci.AddClaim(claim: new Claim(type: ClaimTypes.Name, value: user.Email));
-
-        ci.AddClaim(claim: new Claim(type: ClaimTypes.Role, value: user.Role));
-
-        return ci;
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
