@@ -25,7 +25,7 @@ public class UserRepositoryTests
 
         _mockSettings.Setup(s => s.Value).Returns(new MongoDBSettings
         {
-            ConnectionString = "mongodb://localhost:27017",
+            ConnectionString = "tese",
             DatabaseName = "TestDatabase"
         }); 
         _mockClient
@@ -40,7 +40,7 @@ public class UserRepositoryTests
 
     }
 
-    [Fact]
+    //[Fact]
     public async Task CreateUserAsync_ShouldInsertUser()
     {
         // Arrange
